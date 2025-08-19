@@ -15,7 +15,7 @@ export default defineConfig({
     }),
   ],
   build: {
-    outDir: "build",
+    outDir: "e-hoi-id-grabber",
     rollupOptions: {
       input: {
         main: "./index.html",
