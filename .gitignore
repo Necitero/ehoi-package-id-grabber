@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 e-hoi-id-grabber/
+e-hoi-id-grabber.zip
 
 # Editor directories and files
 .vscode/*
