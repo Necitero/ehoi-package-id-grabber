@@ -8,14 +8,15 @@ Dieses Repository hilft Package IDs und Trip IDs für bestimmte e-hoi Reisen sim
 
 ### e-hoi Mitarbeiter
 
-1. Lass dir den Ordner der Chrome Extension von jemanden geben, der sie bereits hat. Am besten speicherst du den Ordner an einem Ort, an dem du die Erweiterung nicht löschen wirst.
-2. Geh auf den [Chrome Extension Tab](chrome://extensions/).
-3. Drück oben rechts auf `Developer Mode` bzw. `Entwickler Modus`.
-4. Drück oben links auf `Load unpacked` bzw. `Entpackte Erweiterung Laden`.
-5. Wähle den Ordner aus, der dir geschickt wurde.
-6. Geh auf eine e-hoi Angebotsseite und drücke oben auf das Extension-Symbol (Puzzel-Stück).
-7. Drück auf das e-hoi Icon.
-8. (Optional): Pin das Add-On um es schnell griffbereit zu haben.
+1. Geh zu den [Releases](https://github.com/Necitero/ehoi-package-id-grabber/releases) und lade dir die neueste `e-hoi-id-grabber.zip` Datei runter. Am besten speicherst du den Ordner an einem Ort, an dem du die Erweiterung nicht löschen wirst.
+2. Extrahiere die .zip Datei. Im neuen `e-hoi-id-grabber` Ordner sollte nun eine index.html liegen. Falls nicht: Schau, dass nicht versehentlich ein `e-hoi-id-grabber` Ordner im `e-hoi-id-grabber` Ordner liegt.
+3. Geh auf den [Chrome Extension Tab](chrome://extensions/).
+4. Drück oben rechts auf `Developer Mode` bzw. `Entwickler Modus`.
+5. Drück oben links auf `Load unpacked` bzw. `Entpackte Erweiterung Laden`.
+6. Wähle den Ordner aus, der dir geschickt wurde.
+7. Geh auf eine e-hoi Angebotsseite und drücke oben auf das Extension-Symbol (Puzzel-Stück).
+8. Drück auf das e-hoi Icon.
+9. (Optional): Pin das Add-On um es schnell griffbereit zu haben.
 
 ### Developer
 
