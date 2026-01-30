@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-
-interface PackageSet {
-  name: string;
-  packageId: string;
-  tripId: string;
-}
+import { PackageSet, type PackageSetProps } from "./ui/package-set";
+import { Footer } from "./ui/footer";
 
 type E = HTMLElement;
+type Package = Pick<PackageSetProps, "name" | "packageId" | "tripId">;
 
 const funcCallback = () => {
-  const pkgSets: PackageSet[] = [];
+  const pkgSets: Package[] = [];
   const SUBROW = ".row.termin.sub";
   const MAINROW = ".row.termin.main";
   const SUBSTITUTE_NAME = "Paketname konnte nicht gefunden werden.";
@@ -60,7 +57,7 @@ const funcCallback = () => {
 };
 
 function App() {
-  const [packages, setPackages] = useState<PackageSet[] | null>(null);
+  const [packages, setPackages] = useState<Package[] | null>(null);
   const [active, setActive] = useState<number | null>(null);
 
   useEffect(() => {
@@ -89,46 +86,35 @@ function App() {
   };
 
   return (
-    <div>
-      <div className="reload-area">
-        <span className="reload" onClick={() => window.location.reload()}>
-          Reload
-        </span>
+    <>
+      <div className="content">
+        <div className="reload-area">
+          <span className="reload" onClick={() => window.location.reload()}>
+            Reload
+          </span>
+        </div>
+        <h1>ID Grabber</h1>
+        <hr />
+        <h2>Gefundene IDs:</h2>
+        <br />
+        {!packages ? (
+          <p>Es wurden keine Packages gefunden.</p>
+        ) : (
+          packages.map((pk: Package, index: number) => {
+            return (
+              <PackageSet
+                {...pk}
+                key={index}
+                index={index}
+                active={index === active}
+                handleActiveChange={handleActiveChange}
+              />
+            );
+          })
+        )}
       </div>
-      <h1>ID Grabber</h1>
-      <hr />
-      <h2>Gefundene IDs:</h2>
-      <br />
-      {!packages ? (
-        <p>Es wurden keine Packages gefunden.</p>
-      ) : (
-        packages.map((pk: PackageSet, index: number) => {
-          const { name, packageId, tripId } = pk;
-          return (
-            <div
-              className="accordion"
-              key={index}
-              data-active={(index === active).toString()}
-            >
-              <div
-                className="accordion-title"
-                onClick={() => handleActiveChange(index)}
-              >
-                {name}
-              </div>
-              <div className="accordion-content">
-                <p>
-                  <b>Package ID:</b> {packageId}
-                </p>
-                <p>
-                  <b>Trip ID:</b> {tripId}
-                </p>
-              </div>
-            </div>
-          );
-        })
-      )}
-    </div>
+      <Footer />
+    </>
   );
 }
 

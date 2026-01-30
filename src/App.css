@@ -1,74 +1,135 @@
 body {
-    background-color: white;
+  background-color: white;
 }
 
 #root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: white;
-    color: black;
+  --ehoi-primary: #057a93;
+  --ehoi-interact: #046276;
+  --ehoi-green: #398339;
+  --ehoi-secondary: #b81942;
+  --ehoi-bg: white;
+  --ehoi-alternative-bg: #f5f5f5;
+}
+
+.content {
+  color: black;
+  background-color: white;
+  padding-block: 1rem;
+  width: 350px;
+  margin: 0 20px;
+  max-width: 1280px;
 }
 
 h1 {
-    color: #007c8b;
+  color: var(--ehoi-primary);
 }
 
 h1,
 h2,
 p {
-    margin: 0;
+  margin: 0;
 }
 
 .reload-area {
-    display: flex;
-    justify-content: end;
-    align-items: center;
+  display: flex;
+  justify-content: end;
+  align-items: center;
 
-    .reload {
-        font-size: 0.65rem;
-        color: #007c8b;
-        transition: all 0.3s ease;
-        transform-origin: center;
-        padding: 2px 4px;
-        border-radius: 6px;
+  .reload {
+    font-size: 0.65rem;
+    color: var(--ehoi-primary);
+    transition: all 0.3s ease;
+    transform-origin: center;
+    padding: 2px 4px;
+    border-radius: 6px;
 
-        &:hover {
-            cursor: pointer;
-            color: #0093a5;
-            background-color: #efefef;
-        }
+    &:hover {
+      cursor: pointer;
+      color: var(--ehoi-interact);
+      background-color: var(--ehoi-alternative-bg);
     }
+  }
 }
 
-.accordion {
-    margin-bottom: 12px;
+.package {
+  margin-bottom: 12px;
 
-    &[data-active="true"] > .accordion-content {
-        display: block;
+  &[data-active="true"] > .package-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .package-title {
+    font-size: 0.8rem;
+    background-color: var(--ehoi-primary);
+    color: white;
+    padding: 6px 12px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--ehoi-interact);
     }
+  }
 
-    .accordion-title {
-        font-size: 0.8rem;
-        background-color: #007c8b;
-        color: white;
-        padding: 6px 12px;
-        transition: all 0.3s ease;
+  .package-content {
+    display: none;
+    font-size: 0.75rem;
+    padding: 6px 0 0 18px;
+    border-left: 1px solid var(--ehoi-primary);
 
-        &:hover {
-            cursor: pointer;
-            background-color: #0093a5;
-        }
+    .package-content-pair {
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
     }
+  }
+}
 
-    .accordion-content {
-        display: none;
-        font-size: 0.75rem;
-        padding: 6px 0 0 18px;
-        border-left: 1px solid #007c8b;
+.copy-button {
+  background-color: var(--ehoi-bg);
+  border: 1px solid var(--ehoi-secondary);
+  outline: none;
+  transition: all 0.3s ease;
+  color: var(--ehoi-secondary);
+  border-radius: 0;
 
-        p {
-            margin: 0;
-        }
+  &:hover {
+    border-color: var(--ehoi-secondary);
+    background-color: var(--ehoi-secondary);
+    color: var(--ehoi-bg);
+  }
+
+  &[data-copied="true"] {
+    color: var(--ehoi-bg);
+    border: 1px solid var(--ehoi-green);
+    background-color: var(--ehoi-green);
+    &:hover {
+      border: 1px solid var(--ehoi-green);
+      background-color: var(--ehoi-green);
     }
+  }
+}
+
+.footer {
+  background: var(--ehoi-alternative-bg);
+  color: var(--ehoi-primary);
+  width: 100%;
+  padding: 8px 6px;
+  text-align: center;
+
+  .footer-cta {
+    border: none;
+    background: var(--ehoi-alternative-bg);
+    color: var(--ehoi-primary);
+    font-weight: bold;
+    border-radius: 0;
+
+    &:hover {
+      color: var(--ehoi-interact);
+    }
+  }
 }
