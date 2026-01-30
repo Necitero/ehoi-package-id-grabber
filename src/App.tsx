@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { PackageSet, type PackageSetProps } from "./ui/package-set";
 import { Footer } from "./ui/footer";
+import { Header } from "./ui/header";
 
 type E = HTMLElement;
 type Package = Pick<PackageSetProps, "name" | "packageId" | "tripId">;
@@ -86,35 +87,30 @@ function App() {
   };
 
   return (
-    <>
+    <div className="application">
+      <Header />
       <div className="content">
-        <div className="reload-area">
-          <span className="reload" onClick={() => window.location.reload()}>
-            Reload
-          </span>
-        </div>
-        <h1>ID Grabber</h1>
-        <hr />
-        <h2>Gefundene IDs:</h2>
-        <br />
         {!packages ? (
           <p>Es wurden keine Packages gefunden.</p>
         ) : (
-          packages.map((pk: Package, index: number) => {
-            return (
-              <PackageSet
-                {...pk}
-                key={index}
-                index={index}
-                active={index === active}
-                handleActiveChange={handleActiveChange}
-              />
-            );
-          })
+          <>
+            <h2>Gefundene IDs:</h2>
+            {packages.map((pk: Package, index: number) => {
+              return (
+                <PackageSet
+                  {...pk}
+                  key={index}
+                  index={index}
+                  active={index === active}
+                  handleActiveChange={handleActiveChange}
+                />
+              );
+            })}
+          </>
         )}
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 
