@@ -36,3 +36,5 @@ Falls e-hoi die Weiterentwicklung dieses Projektes stoppen, lizensieren oder in 
 ## Lizens
 
 This project is licensed under the terms of the MIT license.
+
+Logos are property of e-hoi GmbH
