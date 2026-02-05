@@ -2,7 +2,7 @@ import { CopyButton } from "./copy-button";
 
 export interface PackageSetProps {
   index: number;
-  name: string;
+  tripOption: string;
   packageId: string;
   tripId: string;
   active: boolean;
@@ -11,7 +11,7 @@ export interface PackageSetProps {
 
 export const PackageSet = ({
   index,
-  name,
+  tripOption,
   packageId,
   tripId,
   active,
@@ -20,7 +20,7 @@ export const PackageSet = ({
   return (
     <div className="package" data-active={active}>
       <div className="package-title" onClick={() => handleActiveChange(index)}>
-        {name}
+        Anreise: {tripOption}
       </div>
       <div className="package-content">
         <p className="package-content-pair">

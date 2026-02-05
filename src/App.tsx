@@ -8,6 +8,7 @@ import { initPackages, type Package } from "./helpers/packages";
 const EHOI_URL = "e-hoi";
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(true);
   const [isEhoi, setIsEhoi] = useState<boolean>();
   const [packages, setPackages] = useState<Package[] | null>(null);
   const [active, setActive] = useState<number | null>(null);
@@ -27,6 +28,7 @@ function App() {
       });
 
       setPackages(injection?.result ?? null);
+      setLoading(false);
     })();
   }, []);
 
@@ -41,7 +43,6 @@ function App() {
   return (
     <div className="application">
       <Header />
-
       <div className="content">
         {!packages || packages?.length < 1 ? (
           <>
@@ -53,7 +54,11 @@ function App() {
                 </b>
               </p>
             )}
-            <p>Es wurden keine Packages gefunden.</p>
+            <p>
+              {loading
+                ? "Bitte warte einen Moment..."
+                : "Es wurden keine Packages gefunden."}
+            </p>
           </>
         ) : (
           <>

@@ -1,54 +1,94 @@
 import type { PackageSetProps } from "../ui/package-set";
 
-export type Package = Pick<PackageSetProps, "name" | "packageId" | "tripId">;
+type Price = {
+  PRICE: number;
+  PRICEFORMATTED: string;
+};
+type FetchedOptionData = {
+  BESTPRICES: Record<string, Price>;
+  LEISTUNGEN_HTML: string;
+  TERMINE_HTML: string;
+};
+export type Package = Pick<
+  PackageSetProps,
+  "tripOption" | "packageId" | "tripId"
+>;
 type E = HTMLElement;
 
-export const initPackages = () => {
-  const pkgSets: Package[] = [];
+export const initPackages = async (): Promise<Package[] | undefined> => {
+  // Selectors
   const SUBROW = ".row.termin.sub";
-  const MAINROW = ".row.termin.main";
-  const SUBSTITUTE_NAME = "Paketname konnte nicht gefunden werden.";
+  const PRICE_MATRIX = ".pricematrix-container";
+  const TRIP_OPTIONS = ".pricematrix-reiseoptionen label";
+  const ACTIVE_TRIP_OPTION = `${TRIP_OPTIONS} input[checked]`;
 
+  // Elements
+  const tripOptions = document.querySelectorAll<E>(TRIP_OPTIONS);
   const rows = document.querySelectorAll<E>(SUBROW);
-  const mainRow = document.querySelector<E>(MAINROW);
-  const mainTitle = mainRow?.children[0]?.textContent;
-  if (!rows) return null;
+  const priceMatrix = document.querySelector<E>(PRICE_MATRIX);
+  const tripOption = document.querySelector<E>(ACTIVE_TRIP_OPTION);
+  if (!rows || !priceMatrix || !tripOption) return undefined;
+  const { routeplanid } = priceMatrix.dataset;
+  if (!routeplanid) return undefined;
 
-  // High possibility the title is a date if it's only one
-  if (rows.length === 1) {
-    const regex = new RegExp(/([0-9]{2}\.){2}[0-9]{4}/);
-    const title = rows[0].querySelector(".title");
-    const { tripid, packageid } = rows[0].dataset;
-    if (!title || !tripid || !packageid) {
-      return;
-    }
-    const match = regex.exec(title.childNodes[0].textContent || "");
-    let name = "";
-    // If name is date, use main row title
-    if (match) {
-      name = mainTitle || SUBSTITUTE_NAME;
-    } else {
-      name = title.childNodes[0].textContent || "Could ";
-    }
-    pkgSets.push({
-      name,
-      tripId: tripid,
-      packageId: packageid,
-    });
-  }
+  // Get Options Data
+  const parseData = (
+    html: string,
+  ): Pick<PackageSetProps, "packageId" | "tripId"> | undefined => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
 
-  for (const row of rows) {
+    const row = doc.querySelector<E>(
+      ".row.termin.sub.align-items-center[data-tripid][data-packageid]",
+    );
+    if (!row) return undefined;
     const { tripid, packageid } = row.dataset;
-    const title = row.querySelector(".title");
-    const exists = pkgSets.find((pkgSet) => pkgSet.packageId === packageid);
+    if (!tripid || !packageid) return undefined;
+    return { tripId: tripid, packageId: packageid };
+  };
 
-    if (tripid && packageid && title && !exists) {
-      pkgSets.push({
-        name: title.childNodes[0].textContent || SUBSTITUTE_NAME,
-        tripId: tripid,
-        packageId: packageid,
-      });
-    }
+  // Fetch all trip type options
+  async function fetchOptions(tripValue: number): Promise<FetchedOptionData> {
+    const url = new URL("https://www.e-hoi.de/");
+    url.searchParams.set("fuseaction", "mod_pricematrix.showpricematrix");
+    url.searchParams.set("age1", "35");
+    url.searchParams.set("age2", "35");
+    url.searchParams.set("age3", "0");
+    url.searchParams.set("age4", "0");
+    url.searchParams.set("initial", "1");
+    url.searchParams.set("routeplanid", routeplanid!);
+    url.searchParams.set("source", "search");
+    url.searchParams.set("anreise", String(tripValue));
+    url.searchParams.set("version", "2");
+    url.searchParams.set("_", String(Date.now()));
+
+    const res = await fetch(url.toString(), {
+      credentials: "include",
+      headers: {
+        "x-requested-with": "XMLHttpRequest",
+        accept: "application/json, text/plain, */*",
+      },
+    });
+
+    return res.json();
   }
+
+  // Get all results and map data
+  const results = await Promise.all(
+    Array.from(tripOptions).map(async (option, i) => {
+      const options = await fetchOptions(i + 1);
+      if (!options) return null;
+      const data = parseData(options.TERMINE_HTML);
+      if (!data) return null;
+
+      return {
+        tripOption: option.textContent ?? "Unbekannt",
+        tripId: data.tripId,
+        packageId: data.packageId,
+      } satisfies Package;
+    }),
+  );
+
+  // Filter incorrect data
+  const pkgSets: Package[] = results.filter((p): p is Package => p !== null);
   return pkgSets;
 };
