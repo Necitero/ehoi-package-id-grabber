@@ -4,6 +4,7 @@ import { PackageSet } from "./ui/package-set";
 import { Footer } from "./ui/footer";
 import { Header } from "./ui/header";
 import { initPackages, type Package } from "./helpers/packages";
+import { getCurrentDate, getSpecialDate } from "./helpers/special";
 
 const EHOI_URL = "e-hoi";
 
@@ -12,6 +13,8 @@ function App() {
   const [isEhoi, setIsEhoi] = useState<boolean>();
   const [packages, setPackages] = useState<Package[] | null>(null);
   const [active, setActive] = useState<number | null>(null);
+
+  const specialDay = getSpecialDate(getCurrentDate());
 
   useEffect(() => {
     (async () => {
@@ -39,9 +42,12 @@ function App() {
     }
     setActive(index);
   };
-
   return (
-    <div className="application">
+    <div
+      className="application"
+      // @ts-ignore 2332
+      style={specialDay ? { "--special-color": specialDay.color } : {}}
+    >
       <Header />
       <div className="content">
         {!packages || packages?.length < 1 ? (
@@ -77,7 +83,7 @@ function App() {
           </>
         )}
       </div>
-      <Footer />
+      <Footer message={specialDay?.message} />
     </div>
   );
 }

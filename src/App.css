@@ -2,16 +2,13 @@ body {
   background-color: white;
 }
 
-#root {
-  --ehoi-primary: #057a93;
+.application {
+  --ehoi-primary: var(--special-color, #057a93);
   --ehoi-interact: #046276;
   --ehoi-green: #398339;
   --ehoi-secondary: #b81942;
   --ehoi-bg: white;
   --ehoi-alternative-bg: #f5f5f5;
-}
-
-.application {
   height: 400px;
   display: grid;
   grid-template-columns: 1fr;
