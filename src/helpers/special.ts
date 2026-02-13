@@ -13,10 +13,23 @@ export const SPECIAL_DATES: SpecialDate[] = [
     message: "♡ Happy Valentines ♡ from Necitero ♡",
   },
   {
+    date: "03-08",
+    name: "womans-day",
+    color: "#46296E",
+    message: "Happy woman's day ♡ from Necitero",
+  },
+
+  {
     date: "05-17",
     name: "birthday",
     color: "#212121",
     message: "Happy Birthday, Necitero!",
+  },
+  {
+    date: "10-31",
+    name: "halloween",
+    color: "#CC5500",
+    message: "Spoooooky greetings from Necitero",
   },
   {
     date: "12-24",
