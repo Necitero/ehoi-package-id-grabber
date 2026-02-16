@@ -48,7 +48,8 @@ export const initPackages = async (): Promise<Package[] | undefined> => {
 
   // Fetch all trip type options
   async function fetchOptions(tripValue: number): Promise<FetchedOptionData> {
-    const url = new URL("https://www.e-hoi.de/");
+    const location = window.location;
+    const url = new URL(`${location.protocol}//${location.host}/`);
     url.searchParams.set("fuseaction", "mod_pricematrix.showpricematrix");
     url.searchParams.set("age1", "35");
     url.searchParams.set("age2", "35");
