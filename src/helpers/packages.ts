@@ -89,7 +89,22 @@ export const initPackages = async (): Promise<Package[] | undefined> => {
     }),
   );
 
-  // Filter incorrect data
-  const pkgSets: Package[] = results.filter((p): p is Package => p !== null);
-  return pkgSets;
+  if (!results[0]) {
+    // If results are empty, try fallback collection
+    const fallback = parseData(document.body.innerHTML);
+    const date = document.querySelector(
+      ".pricematrix-container .optionen label",
+    )?.textContent;
+    if (!fallback || !date) return;
+    const pkgSet: Package = {
+      tripOption: date,
+      tripId: fallback.tripId,
+      packageId: fallback.packageId,
+    };
+    return [pkgSet];
+  } else {
+    // Filter incorrect data
+    const pkgSets: Package[] = results.filter((p): p is Package => p !== null);
+    return pkgSets;
+  }
 };
