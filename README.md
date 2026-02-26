@@ -1,7 +1,7 @@
 # ehoi Package ID Grabber
 
 > [!CAUTION]
-> Stand: 2026-02-26. Diese Browsererweiterung funktioniert aktuell nicht, da sich das Front-End auf den e-hoi Seiten verändert hat und die erforderlichen Informationen aktuell nicht auslesbar sind. Es ist aktuell nicht absehbar, ob ein Fix gefunden werden kann, oder diese Erweiterung nun von den Änderungen e-hoi Front-End Team abhängig ist. Ich bitte herzlich um Geduld und hoffe, dass eine Lösung schnell gefunden wird.
+> Stand: 2026-02-26. Diese Browsererweiterung funktioniert zu diesem Zeitpunkt nicht, da sich das Front-End auf den e-hoi Seiten verändert hat und die erforderlichen Informationen aktuell nicht auslesbar sind. Es ist derzeit nicht absehbar, ob ein Fix gefunden werden kann, oder diese Erweiterung nun von den Änderungen e-hoi Front-End Team abhängig ist. Ich bitte herzlich um Geduld und hoffe, dass ich schnell eine Lösung finde.
 
 ## 🔑 Allgemeine Information
 
@@ -13,7 +13,7 @@ Dieses Repository hilft Package IDs und Trip IDs für bestimmte e-hoi Reisen sim
 
 1. Geh zu den [Releases](https://github.com/Necitero/ehoi-package-id-grabber/releases) und lade dir die neueste `e-hoi-id-grabber.zip` Datei runter. Am besten speicherst du den Ordner an einem Ort, an dem du die Erweiterung nicht löschen wirst.
 2. Extrahiere die .zip Datei. Im neuen `e-hoi-id-grabber` Ordner sollte nun eine index.html liegen. Falls nicht: Schau, dass nicht versehentlich ein `e-hoi-id-grabber` Ordner im `e-hoi-id-grabber` Ordner liegt.
-3. Geh auf den [Chrome Extension Tab](chrome://extensions/).
+3. Geh auf den Chrome Extension Tab (`chrome://extensions/`).
 4. Drück oben rechts auf `Developer Mode` bzw. `Entwickler Modus`.
 5. Drück oben links auf `Load unpacked` bzw. `Entpackte Erweiterung Laden`.
 6. Wähle den Ordner aus, der dir geschickt wurde.
