@@ -1,5 +1,8 @@
 # ehoi Package ID Grabber
 
+> [!CAUTION]
+> Stand: 2026-02-26. Diese Browsererweiterung funktioniert aktuell nicht, da sich das Front-End auf den e-hoi Seiten verändert hat und die erforderlichen Informationen aktuell nicht auslesbar sind. Es ist aktuell nicht absehbar, ob ein Fix gefunden werden kann, oder diese Erweiterung nun von den Änderungen e-hoi Front-End Team abhängig ist. Ich bitte herzlich um Geduld und hoffe, dass eine Lösung schnell gefunden wird.
+
 ## 🔑 Allgemeine Information
 
 Dieses Repository hilft Package IDs und Trip IDs für bestimmte e-hoi Reisen simpler auszugeben. Es ist ein experimentelles Chrome Add-On und wurde für eine einzige Person geschrieben.
