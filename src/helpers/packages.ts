@@ -1,110 +1,45 @@
 import type { PackageSetProps } from "../ui/package-set";
 
-type Price = {
-  PRICE: number;
-  PRICEFORMATTED: string;
-};
-type FetchedOptionData = {
-  BESTPRICES: Record<string, Price>;
-  LEISTUNGEN_HTML: string;
-  TERMINE_HTML: string;
-};
-export type Package = Pick<
-  PackageSetProps,
-  "tripOption" | "packageId" | "tripId"
->;
-type E = HTMLElement;
+export type Package = Pick<PackageSetProps, "tripOption" | "packageId">;
 
-export const initPackages = async (): Promise<Package[] | undefined> => {
+export const initPackages = (): Array<Package> => {
   // Selectors
-  const SUBROW = ".row.termin.sub";
-  const PRICE_MATRIX = ".pricematrix-container";
-  const TRIP_OPTIONS = ".pricematrix-reiseoptionen label";
-  const ACTIVE_TRIP_OPTION = `${TRIP_OPTIONS} input[checked]`;
+  const PARENT = ".inklusivleistungen-module";
+  const WRAPPING = ".package";
+  const TITLE = "h5";
+  const TITLE_STRING_REMOVE = /(Anreise:|Paket:)/gm;
+
+  // Format title
+  function formatTitle(title: string): string {
+    return title.replace(TITLE_STRING_REMOVE, "");
+  }
+  // Format package id
+  function formatPackageName(name: string): string {
+    return name.split("-")[1];
+  }
+
+  // Get data
+  function getPackageData(packageElement: HTMLElement): Package | undefined {
+    const classes = packageElement.classList;
+    const packageName = Object.values(classes).find((cls) =>
+      cls.includes("package-"),
+    );
+    const title = packageElement.querySelector(TITLE)?.textContent;
+    if (!title || !packageName) return;
+    const fTitle = formatTitle(title);
+    const packageId = formatPackageName(packageName);
+    return { tripOption: fTitle, packageId };
+  }
 
   // Elements
-  const tripOptions = document.querySelectorAll<E>(TRIP_OPTIONS);
-  const rows = document.querySelectorAll<E>(SUBROW);
-  const priceMatrix = document.querySelector<E>(PRICE_MATRIX);
-  const tripOption = document.querySelector<E>(ACTIVE_TRIP_OPTION);
-  if (!rows || !priceMatrix || !tripOption) return undefined;
-  const { routeplanid } = priceMatrix.dataset;
-  if (!routeplanid) return undefined;
+  const parentEl = document.querySelector(PARENT);
+  const packageWrappers = parentEl?.querySelectorAll(WRAPPING);
+  if (!parentEl || !packageWrappers) return [];
+  const pkgSets: Array<Package> = [];
+  packageWrappers.forEach((pkg) => {
+    const data = getPackageData(pkg as HTMLElement);
+    if (data) pkgSets.push(data);
+  });
 
-  // Get Options Data
-  const parseData = (
-    html: string,
-  ): Pick<PackageSetProps, "packageId" | "tripId"> | undefined => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-
-    const row = doc.querySelector<E>(
-      ".row.termin.sub.align-items-center[data-tripid][data-packageid]",
-    );
-    if (!row) return undefined;
-    const { tripid, packageid } = row.dataset;
-    if (!tripid || !packageid) return undefined;
-    return { tripId: tripid, packageId: packageid };
-  };
-
-  // Fetch all trip type options
-  async function fetchOptions(tripValue: number): Promise<FetchedOptionData> {
-    const location = window.location;
-    const url = new URL(`${location.protocol}//${location.host}/`);
-    url.searchParams.set("fuseaction", "mod_pricematrix.showpricematrix");
-    url.searchParams.set("age1", "35");
-    url.searchParams.set("age2", "35");
-    url.searchParams.set("age3", "0");
-    url.searchParams.set("age4", "0");
-    url.searchParams.set("initial", "1");
-    url.searchParams.set("routeplanid", routeplanid!);
-    url.searchParams.set("source", "search");
-    url.searchParams.set("anreise", String(tripValue));
-    url.searchParams.set("version", "2");
-    url.searchParams.set("_", String(Date.now()));
-
-    const res = await fetch(url.toString(), {
-      credentials: "include",
-      headers: {
-        "x-requested-with": "XMLHttpRequest",
-        accept: "application/json, text/plain, */*",
-      },
-    });
-
-    return res.json();
-  }
-
-  // Get all results and map data
-  const results = await Promise.all(
-    Array.from(tripOptions).map(async (option, i) => {
-      const options = await fetchOptions(i + 1);
-      if (!options) return null;
-      const data = parseData(options.TERMINE_HTML);
-      if (!data) return null;
-
-      return {
-        tripOption: option.textContent ?? "Unbekannt",
-        tripId: data.tripId,
-        packageId: data.packageId,
-      } satisfies Package;
-    }),
-  );
-
-  if (!results[0]) {
-    // If results are empty, try fallback collection
-    const fallback = parseData(document.body.innerHTML);
-    const date = document.querySelector(
-      ".pricematrix-container .optionen label",
-    )?.textContent;
-    if (!fallback || !date) return;
-    const pkgSet: Package = {
-      tripOption: date,
-      tripId: fallback.tripId,
-      packageId: fallback.packageId,
-    };
-    return [pkgSet];
-  } else {
-    // Filter incorrect data
-    const pkgSets: Package[] = results.filter((p): p is Package => p !== null);
-    return pkgSets;
-  }
+  return pkgSets;
 };
