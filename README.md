@@ -1,3 +1,7 @@
+> [!WARNING]
+> Dieses Projekt wurde auf Codeberg verschoben.
+> Du findest die neueste Version hier: (Codeberg)[https://codeberg.org/Necitero/ehoi-package-id-grabber]
+
 # ehoi Package ID Grabber
 
 ## 🔑 Allgemeine Information
